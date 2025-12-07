@@ -57,45 +57,7 @@ if not missing.empty:
 final_gdf = gdf_merged[['geometry', 'name']].copy()
 final_gdf['id'] = final_gdf.index # ID для унікальності в Altair
 
-# 4. Візуалізація через Altair
-
-# Шар полігонів (Повіти)
-polygons_layer = alt.Chart(final_gdf).mark_geoshape(
-    stroke='white',
-    strokeWidth=0.5
-).encode(
-    color=alt.Color('name:N', title="Повіт", legend=alt.Legend(columns=1)),
-    tooltip=[alt.Tooltip('name:N', title="Назва повіту")]
-).properties(
-    width=700,
-    height=600,
-    title="Полтавська губернія (1821)"
-)
-
-# Шар точок (Міста) - щоб перевірити правильність
-cities_layer = alt.Chart(gdf_cities).mark_circle(size=50, color='black').encode(
-    longitude='lon:Q',
-    latitude='lat:Q',
-    tooltip=[alt.Tooltip('name:N', title="Місто")]
-)
-
-# Шар тексту (підписи міст)
-text_layer = alt.Chart(gdf_cities).mark_text(dy=-10, color='black').encode(
-    longitude='lon:Q',
-    latitude='lat:Q',
-    text='name:N'
-)
-
-# Комбінуємо
-final_chart = polygons_layer + cities_layer + text_layer
-
-# Збереження
-output_html = 'poltava_map_interactive.html'
-final_chart.save(output_html)
-
-print(f"Готово! Відкрийте файл '{output_html}' у вашому браузері.")
-
-# Додатково: збережемо підписаний GeoJSON для майбутнього використання
+# збережемо підписаний GeoJSON для майбутнього використання
 output_geojson = 'poltava_governorate_named.geojson'
 final_gdf.to_file(output_geojson, driver='GeoJSON')
 print(f"Також збережено розмічений файл: '{output_geojson}'")
