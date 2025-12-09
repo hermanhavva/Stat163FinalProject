@@ -7,7 +7,7 @@ import sys
 from PIL import Image
 
 # ==========================================
-# КОНФІГУРАЦІЯ
+# сonfig
 # ==========================================
 IMAGE_PATH = './data/Poltava_governorate_1821.jpg' 
 GEOJSON_FILE = 'poltava_regions.geojson'
@@ -21,7 +21,7 @@ real_coords = np.array([
     [50.5885, 32.3876]  # Прилуки
 ])
 
-# 2. ВАШІ ПІКСЕЛЬНІ КООРДИНАТИ
+# 2. ПІКСЕЛЬНІ КООРДИНАТИ
 pixel_coords = np.array([
     [3351, 2787], # Полтава
     [1965, 2120], # Пирятин
@@ -63,7 +63,7 @@ class MapDigitizer:
         self.pan_start = None
         
         self._setup_plot()
-        self.load_existing()
+        self.load_existing_geojson()
 
     def _get_transform(self, src, dst):
         src_pad = np.hstack([src, np.ones((src.shape[0], 1))])
@@ -241,7 +241,7 @@ class MapDigitizer:
             json.dump(data, f, indent=2)
         print(f"ФАЙЛ ЗБЕРЕЖЕНО: {os.path.abspath(GEOJSON_FILE)}")
 
-    def load_existing(self):
+    def load_existing_geojson(self):
         if not os.path.exists(GEOJSON_FILE): return
         print(f"Завантаження: {GEOJSON_FILE}")
         try:
